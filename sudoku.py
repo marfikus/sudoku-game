@@ -35,13 +35,3 @@ def detect_square(string, column):
 	return (x1, y1, x2, y2)
 
 
-while True:
-	x = input(':')
-	if x == 'q':
-		break
-
-	x = list(x.split())
-
-	print(detect_square(x[0], x[1]))
-
-	
