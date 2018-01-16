@@ -1,14 +1,28 @@
 
+import random
+
+# game_field = [
+# [1, 2, 3, 2, 0, 0, 5, 0, 0],
+# [4, 5, 6, 0, 0, 0, 0, 0, 0],
+# [7, 8, 9, 0, 0, 0, 0, 0, 0],
+# [4, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 3, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [2, 0, 0, 0, 0, 0, 0, 5, 0]]
+
 game_field = [
-[1, 2, 3, 2, 0, 0, 5, 0, 0],
-[4, 5, 6, 0, 0, 0, 0, 0, 0],
-[7, 8, 9, 0, 0, 0, 0, 0, 0],
-[4, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 3, 0, 0],
 [0, 0, 0, 0, 0, 0, 0, 0, 0],
 [0, 0, 0, 0, 0, 0, 0, 0, 0],
 [0, 0, 0, 0, 0, 0, 0, 0, 0],
-[2, 0, 0, 0, 0, 0, 0, 5, 0]]
+[0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
 
 
 def detect_square(string, column):
@@ -76,8 +90,50 @@ def create_unique_set(string, column):
 	# return all_numbers, exist_numbers, unique_set
 	return unique_set
 
-print(create_unique_set(0, 0))
+# print(create_unique_set(0, 0))
 # print(create_unique_set(3, 3))
 # print(create_unique_set(8, 8))
-print(create_unique_set(3, 7))
+# print(create_unique_set(3, 7))
 # print(set(range(0, 9)))
+
+def fill_game_field():
+
+	# надо узнать закон заполнения!
+
+	# for i in range(0, 9):
+	# 	for j in range(0, 9):
+	# 		variants = list(create_unique_set(i, j))
+	# 		print('\n===============\n', variants)
+	# 		value = random.choice(variants)
+	# 		print(value)
+	# 		game_field[i][j] = value
+
+
+	for i in range(0, 8):
+		print('\n===============\n')
+		variants = list(create_unique_set(i, i))
+		print(variants)
+		value = random.choice(variants)
+		print(value)
+		game_field[i][i] = value
+
+		for j in range(i+1, 9):
+			variants = list(create_unique_set(i, j))
+			# print('\n===============\n', variants)
+			value = random.choice(variants)
+			# print(value)
+			game_field[i][j] = value
+
+			variants = list(create_unique_set(j, i))
+			# print('\n===============\n', variants)
+			value = random.choice(variants)
+			# print(value)
+			game_field[j][i] = value
+
+
+			for n in game_field:
+				print(n)
+
+			print('\n====\n')
+
+fill_game_field()
