@@ -90,50 +90,30 @@ def create_unique_set(string, column):
 	# return all_numbers, exist_numbers, unique_set
 	return unique_set
 
-# print(create_unique_set(0, 0))
-# print(create_unique_set(3, 3))
-# print(create_unique_set(8, 8))
-# print(create_unique_set(3, 7))
-# print(set(range(0, 9)))
-
 def fill_game_field():
 
-	# надо узнать закон заполнения!
+	def calc_value(value):
+		if value > 9:
+			return value - 9
+		return value
 
-	# for i in range(0, 9):
-	# 	for j in range(0, 9):
-	# 		variants = list(create_unique_set(i, j))
-	# 		print('\n===============\n', variants)
-	# 		value = random.choice(variants)
-	# 		print(value)
-	# 		game_field[i][j] = value
+	block_start = 1
+	str_start = 1
 
+	# по блокам из 3х строк:
+	for i in range(0, 8, 3):
+		str_start = block_start
+		# по строкам:
+		for j in range(i, i + 3):
+			# по ячейкам:
+			for n in range(0, 9):
+				game_field[j][n] = calc_value(str_start + n)
 
-	for i in range(0, 8):
-		print('\n===============\n')
-		variants = list(create_unique_set(i, i))
-		print(variants)
-		value = random.choice(variants)
-		print(value)
-		game_field[i][i] = value
-
-		for j in range(i+1, 9):
-			variants = list(create_unique_set(i, j))
-			# print('\n===============\n', variants)
-			value = random.choice(variants)
-			# print(value)
-			game_field[i][j] = value
-
-			variants = list(create_unique_set(j, i))
-			# print('\n===============\n', variants)
-			value = random.choice(variants)
-			# print(value)
-			game_field[j][i] = value
+			str_start += 3
+		block_start += 1
 
 
-			for n in game_field:
-				print(n)
-
-			print('\n====\n')
+	for n in game_field:
+		print(n)
 
 fill_game_field()
