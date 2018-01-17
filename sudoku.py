@@ -117,3 +117,23 @@ def fill_game_field():
 		print(n)
 
 fill_game_field()
+print('\n===========\n')
+
+def mix_game_field():
+
+	def transpose():
+		list_of_columns = []
+		# по столбцам:
+		for j in range(len(game_field)):
+			# берем j-тую ячейку каждой строки:
+			column = [game_field[i][j] for i in range(len(game_field))]
+			list_of_columns.append(column)
+		
+		return list_of_columns
+
+
+	result = transpose()
+	for n in result:
+		print(n)
+
+mix_game_field()
