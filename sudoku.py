@@ -24,6 +24,13 @@ game_field = [
 [0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
 
+def print_game_field():
+	print('\n===========================\n')
+
+	for i in game_field:
+		print(i)
+
+	print('\n===========================\n')
 
 def detect_square(string, column):
 	x1 = 0
@@ -112,13 +119,6 @@ def fill_game_field():
 			str_start += 3
 		block_start += 1
 
-
-	for n in game_field:
-		print(n)
-
-fill_game_field()
-print('\n===========\n')
-
 def mix_game_field():
 
 	def transpose():
@@ -135,5 +135,9 @@ def mix_game_field():
 	result = transpose()
 	for n in result:
 		print(n)
+
+
+fill_game_field()
+print_game_field()
 
 mix_game_field()
