@@ -133,9 +133,6 @@ def mix_game_field():
 		
 		return list_of_columns
 
-	def mix_blocks():
-		pass
-
 	def mix_strings():
 		mixed = []
 		variants = list(range(len(game_field)))
@@ -146,18 +143,40 @@ def mix_game_field():
 
 		return mixed
 
-	block = []
-	list_of_blocks = []
-	for n in range(0, 9, 3):
-		for m in range(3):
-			block.append(game_field[m + n])
-
-		list_of_blocks.append(block)
+	def create_blocks(mode):
 		block = []
+		list_of_blocks = []
 
-	for i in list_of_blocks:
+		for n in range(0, 9, 3):
+			for m in range(3):
+				if mode == 'str':
+					block.append(game_field[m + n])
+				elif mode == 'col':
+					column = [game_field[i][m + n] for i in range(len(game_field))]
+					block.append(column)
+
+			list_of_blocks.append(block)
+			block = []
+
+		return list_of_blocks
+
+	def mix_blocks(blocks):
+		n = random.randint(0, len(blocks) - 1)
+		print(n)
+		a = blocks.pop(n)
+		print(a)
+		# m = random.randint(0, len(blocks) - 1)
+		m = random.randint(0, 2)
+		print(m)
+		blocks.insert(m, a)
+		for i in blocks:
+			print(i)
+
+	blocks_of_str = create_blocks('str')
+	for i in blocks_of_str:
 		print(i)
 
+	mix_blocks(blocks_of_str)
 
 	# x = random.randint(3, 5)
 	# for i in range(x):
