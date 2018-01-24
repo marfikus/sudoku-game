@@ -121,7 +121,7 @@ def fill_game_field():
 
 def mix_game_field():
 
-	global game_field
+	# global game_field
 
 	def transpose():
 		list_of_columns = []
@@ -131,7 +131,7 @@ def mix_game_field():
 			column = [game_field[i][j] for i in range(len(game_field))]
 			list_of_columns.append(column)
 		
-		return list_of_columns
+		return list_of_columns #
 
 	def mix_strings():
 		mixed = []
@@ -141,11 +141,13 @@ def mix_game_field():
 			mixed.append(game_field[n])
 			variants.remove(n)
 
-		return mixed
+		return mixed #
 
-	def create_blocks(mode):
+	def create_blocks_view(mode):
+		global game_field
+
 		block = []
-		list_of_blocks = []
+		result = []
 
 		for n in range(0, 9, 3):
 			for m in range(3):
@@ -155,28 +157,54 @@ def mix_game_field():
 					column = [game_field[i][m + n] for i in range(len(game_field))]
 					block.append(column)
 
-			list_of_blocks.append(block)
+			result.append(block)
 			block = []
 
-		return list_of_blocks
+		game_field = result
+		return True
 
-	def mix_blocks(blocks):
-		n = random.randint(0, len(blocks) - 1)
-		print(n)
-		a = blocks.pop(n)
-		print(a)
-		# m = random.randint(0, len(blocks) - 1)
-		m = random.randint(0, 2)
-		print(m)
-		blocks.insert(m, a)
-		for i in blocks:
-			print(i)
+	def mix_blocks():
+		count = len(game_field)
+		for i in range(count):
+			n = random.randint(0, count - 1)
+			block = game_field.pop(n)
+			n = random.randint(0, count - 1)
+			game_field.insert(n, block)
 
-	blocks_of_str = create_blocks('str')
-	for i in blocks_of_str:
-		print(i)
+		return True
 
-	mix_blocks(blocks_of_str)
+	def mix_strings_in_blocks():
+		count = len(game_field)
+		for i in range(count):
+			for j in range(count):
+				n = random.randint(0, count - 1)
+				string = game_field[i].pop(n)
+				n = random.randint(0, count - 1)
+				game_field[i].insert(n, string)
+
+		return True
+
+	def create_strings_view():
+		global game_field
+
+		result = []
+		count = len(game_field)
+
+		for i in range(count):
+			for j in range(count):
+				result.append(game_field[i][j])
+
+		game_field = result
+		return True
+
+	create_blocks_view('str')
+	print_game_field()
+	mix_blocks()
+	print_game_field()
+	mix_strings_in_blocks()
+	print_game_field()
+	create_strings_view()
+	# print_game_field()
 
 	# x = random.randint(3, 5)
 	# for i in range(x):
@@ -188,7 +216,7 @@ fill_game_field()
 print_game_field()
 
 mix_game_field()
-# print_game_field()
+print_game_field()
 
 # game_field[0][0] = 0
 # game_field[0][5] = 0
