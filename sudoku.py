@@ -131,7 +131,7 @@ def mix_game_field():
 			column = [game_field[i][j] for i in range(len(game_field))]
 			list_of_columns.append(column)
 		
-		return list_of_columns #
+		return list_of_columns # not used
 
 	def mix_strings():
 		mixed = []
@@ -141,7 +141,7 @@ def mix_game_field():
 			mixed.append(game_field[n])
 			variants.remove(n)
 
-		return mixed #
+		return mixed # not used
 
 	def create_blocks_view(mode):
 		global game_field
@@ -211,12 +211,71 @@ def mix_game_field():
 	# 	game_field = transpose()
 	# 	game_field = mix_strings()
 
+def hide_cells_in_game_field(difficulty_level):
+
+	def count_zeros(string, column):
+		in_string = 0
+		in_column = 0
+		in_square = 0
+
+		for i in range(len(game_field)):
+			if game_field[string][i] == 0:
+				in_string += 1
+			if game_field[i][column] == 0:
+				in_column += 1
+
+		square = detect_square(string, column)
+		for i in range(3):
+			for j in range(3):
+				if game_field[i][j] == 0:
+					in_square += 1
+
+		result = {'in_string': in_string, 'in_column': in_column, 'in_square': in_square}
+		return result
+
+	# print(count_zeros(0, 0))
+
+	if difficulty_level == 'easy':
+		max_hide_cells = 20
+	elif difficulty_level == 'medium':
+		max_hide_cells = 25
+	elif difficulty_level == 'hard':
+		max_hide_cells = 30
+
+	count_hide_cells = 0
+	new_zero = True	# флаг защиты от зацикливания
+
+	while count_hide_cells < max_hide_cells and new_zero:
+		new_zero = False
+		i = random.randint(0, len(game_field[0]) - 1)
+		j = random.randint(0, len(game_field) - 1)
+
+		if game_field[i][j] == 0:
+			new_zero = True
+			continue
+
+		# этот вариант надо додумать, тк при таком условии иногда не набирает и 20,
+		# хотя, может и норм 
+		zeros = count_zeros(i, j)
+		if zeros['in_string'] < 5 and zeros['in_column'] < 5 and zeros['in_square'] < 5:
+			game_field[i][j] = 0
+			count_hide_cells += 1
+			new_zero = True
+
+		# а тут всё просто, без условий)
+		# game_field[i][j] = 0
+		# count_hide_cells += 1
+		# new_zero = True
+
+	print(count_hide_cells)
+
 
 fill_game_field()
 print_game_field()
 
-mix_game_field()
-print_game_field()
+# mix_game_field()
+# print_game_field()
+
 
 # game_field[0][0] = 0
 # game_field[0][5] = 0
@@ -225,12 +284,16 @@ print_game_field()
 
 # print_game_field()
 
+hide_cells_in_game_field('hard')
+
+print_game_field()
+
 # print(create_unique_set(0, 0))
 # print(create_unique_set(0, 5))
 # print(create_unique_set(4, 7))
 # print(create_unique_set(8, 8))
 
-# for i in range(9):
-# 	for j in range(9):
-# 		print(create_unique_set(i, j))
+for i in range(9):
+	for j in range(9):
+		print(i, j, create_unique_set(i, j))
 
