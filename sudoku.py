@@ -68,6 +68,10 @@ def detect_square(string, column):
 	return (x1, y1, x2, y2)
 
 def create_unique_set(string, column):
+
+	if game_field[string][column] != 0:
+		return set()
+
 	all_numbers = set(range(1, 10))
 	exist_numbers = set()
 
@@ -197,7 +201,7 @@ def mix_game_field():
 		game_field = result
 		return True
 
-	create_blocks_view('str')
+	create_blocks_view('col')
 	print_game_field()
 	mix_blocks()
 	print_game_field()
@@ -255,7 +259,8 @@ def hide_cells_in_game_field(difficulty_level):
 			continue
 
 		# этот вариант надо додумать, тк при таком условии иногда не набирает и 20,
-		# хотя, может и норм 
+		# надо добавить проверку в конце: если не набрал до нужного уровня, то по новой, 
+		# а game_field меняем тока, когда норм будет (game_field = game_field_test)
 		zeros = count_zeros(i, j)
 		if zeros['in_string'] < 5 and zeros['in_column'] < 5 and zeros['in_square'] < 5:
 			game_field[i][j] = 0
@@ -270,11 +275,29 @@ def hide_cells_in_game_field(difficulty_level):
 	print(count_hide_cells)
 
 
+def solve_game_field():
+	new_value = True # флаг защиты от зацикливания
+	x = len(game_field[0])
+	y = len(game_field)
+	count_new_value = 0
+
+	while new_value:
+		new_value = False
+		for i in range(x):
+			for j in range(y):
+				variants = list(create_unique_set(i, j))
+				if len(variants) == 1:
+					game_field[i][j] = variants[0]
+					new_value = True
+					count_new_value += 1
+	print(count_new_value)
+
+
 fill_game_field()
 print_game_field()
 
-# mix_game_field()
-# print_game_field()
+mix_game_field()
+print_game_field()
 
 
 # game_field[0][0] = 0
@@ -293,7 +316,10 @@ print_game_field()
 # print(create_unique_set(4, 7))
 # print(create_unique_set(8, 8))
 
-for i in range(9):
-	for j in range(9):
-		print(i, j, create_unique_set(i, j))
+# for i in range(9):
+# 	for j in range(9):
+# 		print(i, j, create_unique_set(i, j))
+
+solve_game_field()
+print_game_field()
 
