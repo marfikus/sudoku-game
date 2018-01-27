@@ -224,8 +224,6 @@ def hide_cells_in_game_field(difficulty_level):
 		result = {'in_string': in_string, 'in_column': in_column, 'in_square': in_square}
 		return result
 
-	# print(count_zeros(0, 0))
-
 	if difficulty_level == 'easy':
 		max_hide_cells = 20
 	elif difficulty_level == 'medium':
@@ -286,26 +284,9 @@ print_game_field()
 mix_game_field()
 print_game_field()
 
-
-# game_field[0][0] = 0
-# game_field[0][5] = 0
-# game_field[4][7] = 0
-# game_field[8][8] = 0
-
-# print_game_field()
-
 hide_cells_in_game_field('hard')
 
 print_game_field()
-
-# print(create_unique_set(0, 0))
-# print(create_unique_set(0, 5))
-# print(create_unique_set(4, 7))
-# print(create_unique_set(8, 8))
-
-# for i in range(9):
-# 	for j in range(9):
-# 		print(i, j, create_unique_set(i, j))
 
 solve_game_field()
 print_game_field()
