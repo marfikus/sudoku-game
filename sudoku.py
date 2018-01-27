@@ -1,5 +1,5 @@
 
-import random
+import random, copy
 
 game_field = [
 [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -204,21 +204,23 @@ def mix_game_field():
 
 def hide_cells_in_game_field(difficulty_level):
 
-	def count_zeros(string, column):
+	global game_field
+
+	def count_zeros(field, string, column):
 		in_string = 0
 		in_column = 0
 		in_square = 0
 
-		for i in range(len(game_field)):
-			if game_field[string][i] == 0:
+		for i in range(len(field)):
+			if field[string][i] == 0:
 				in_string += 1
-			if game_field[i][column] == 0:
+			if field[i][column] == 0:
 				in_column += 1
 
 		square = detect_square(string, column)
 		for i in range(3):
 			for j in range(3):
-				if game_field[i][j] == 0:
+				if field[i][j] == 0:
 					in_square += 1
 
 		result = {'in_string': in_string, 'in_column': in_column, 'in_square': in_square}
@@ -232,31 +234,35 @@ def hide_cells_in_game_field(difficulty_level):
 		max_hide_cells = 30
 
 	count_hide_cells = 0
-	new_zero = True	# флаг защиты от зацикливания
 
-	while count_hide_cells < max_hide_cells and new_zero:
-		new_zero = False
-		i = random.randint(0, len(game_field[0]) - 1)
-		j = random.randint(0, len(game_field) - 1)
+	# будет заполнять по новой, пока не наберёт нужное число:
+	while count_hide_cells != max_hide_cells:
 
-		if game_field[i][j] == 0:
-			new_zero = True
-			continue
+		game_field_test = copy.deepcopy(game_field)
+		count_hide_cells = 0
+		new_zero = True	# флаг защиты от зацикливания
 
-		# этот вариант надо додумать, тк при таком условии иногда не набирает и 20,
-		# надо добавить проверку в конце: если не набрал до нужного уровня, то по новой, 
-		# а game_field меняем тока, когда норм будет (game_field = game_field_test)
-		zeros = count_zeros(i, j)
-		if zeros['in_string'] < 5 and zeros['in_column'] < 5 and zeros['in_square'] < 5:
-			game_field[i][j] = 0
-			count_hide_cells += 1
-			new_zero = True
+		while count_hide_cells < max_hide_cells and new_zero:
+			new_zero = False
+			i = random.randint(0, len(game_field_test[0]) - 1)
+			j = random.randint(0, len(game_field_test) - 1)
 
-		# а тут всё просто, без условий)
-		# game_field[i][j] = 0
-		# count_hide_cells += 1
-		# new_zero = True
+			if game_field_test[i][j] == 0:
+				new_zero = True
+				continue
 
+			zeros = count_zeros(game_field_test, i, j)
+			if zeros['in_string'] < 5 and zeros['in_column'] < 5 and zeros['in_square'] < 5:
+				game_field_test[i][j] = 0
+				count_hide_cells += 1
+				new_zero = True
+
+			# а тут всё просто, без условий)
+			# game_field_test[i][j] = 0
+			# count_hide_cells += 1
+			# new_zero = True
+
+	game_field = game_field_test
 	print(count_hide_cells)
 
 
@@ -275,8 +281,13 @@ def solve_game_field():
 					game_field[i][j] = variants[0]
 					new_value = True
 					count_new_value += 1
-	print(count_new_value)
 
+	# иногда не может заполнить некоторые клетки, надо 
+	# надо добавить другие методы решения, например
+	# вставка случайного элемента из вариантов и далее
+	# проверка всей матрицы (добавить функцию проверки!)
+	# 
+	print(count_new_value)
 
 fill_game_field()
 print_game_field()
