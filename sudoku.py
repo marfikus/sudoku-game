@@ -1,17 +1,6 @@
 
 import random
 
-# game_field = [
-# [1, 2, 3, 2, 0, 0, 5, 0, 0],
-# [4, 5, 6, 0, 0, 0, 0, 0, 0],
-# [7, 8, 9, 0, 0, 0, 0, 0, 0],
-# [4, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 3, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [2, 0, 0, 0, 0, 0, 0, 5, 0]]
-
 game_field = [
 [0, 0, 0, 0, 0, 0, 0, 0, 0],
 [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -127,7 +116,7 @@ def mix_game_field():
 
 	# global game_field
 
-	def transpose():
+	def transpose(): # not used
 		list_of_columns = []
 		# по столбцам:
 		for j in range(len(game_field)):
@@ -135,9 +124,9 @@ def mix_game_field():
 			column = [game_field[i][j] for i in range(len(game_field))]
 			list_of_columns.append(column)
 		
-		return list_of_columns # not used
+		return list_of_columns
 
-	def mix_strings():
+	def mix_strings(): # not used
 		mixed = []
 		variants = list(range(len(game_field)))
 		for i in range(len(game_field)):
@@ -145,7 +134,7 @@ def mix_game_field():
 			mixed.append(game_field[n])
 			variants.remove(n)
 
-		return mixed # not used
+		return mixed
 
 	def create_blocks_view(mode):
 		global game_field
@@ -201,19 +190,17 @@ def mix_game_field():
 		game_field = result
 		return True
 
-	create_blocks_view('col')
-	print_game_field()
-	mix_blocks()
-	print_game_field()
-	mix_strings_in_blocks()
-	print_game_field()
-	create_strings_view()
-	# print_game_field()
-
-	# x = random.randint(3, 5)
-	# for i in range(x):
-	# 	game_field = transpose()
-	# 	game_field = mix_strings()
+	x = random.randint(1, 3)
+	for i in range(x):
+		create_blocks_view('col')
+		mix_blocks()
+		mix_strings_in_blocks()
+		create_strings_view()
+		
+		create_blocks_view('str')
+		mix_blocks()
+		mix_strings_in_blocks()
+		create_strings_view()
 
 def hide_cells_in_game_field(difficulty_level):
 
