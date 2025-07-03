@@ -1,2 +1,7 @@
 __pycache__/
-*.pyc
+output/
+drafts/
+.vscode/
+.venv/
+.idea/
+memo.txt
