@@ -130,6 +130,7 @@ def mix_game_field():
         
         return list_of_columns
 
+
     def mix_strings(): # not used
         mixed = []
         variants = list(range(len(game_field)))
@@ -139,6 +140,7 @@ def mix_game_field():
             variants.remove(n)
 
         return mixed
+
 
     def create_blocks_view(mode):
         global game_field
@@ -160,6 +162,7 @@ def mix_game_field():
         game_field = result
         return True
 
+
     def mix_blocks():
         count = len(game_field)
         for i in range(count):
@@ -169,6 +172,7 @@ def mix_game_field():
             game_field.insert(n, block)
 
         return True
+
 
     def mix_strings_in_blocks():
         count = len(game_field)
@@ -180,6 +184,7 @@ def mix_game_field():
                 game_field[i].insert(n, string)
 
         return True
+
 
     def create_strings_view():
         global game_field
@@ -194,17 +199,36 @@ def mix_game_field():
         game_field = result
         return True
 
+
+    def change_digits_in_strings(times=3):
+        global game_field
+
+        for _ in range(times):
+            digits = [i for i in range(1, len(game_field) + 1)]
+            a = random.choice(digits)
+            digits.remove(a)
+            b = random.choice(digits)
+
+            for string in game_field:
+                a_index = string.index(a)
+                b_index = string.index(b)
+                string[a_index] = b
+                string[b_index] = a
+
+
     x = random.randint(1, 3)
     for i in range(x):
         create_blocks_view("col")
         mix_blocks()
         mix_strings_in_blocks()
         create_strings_view()
+        change_digits_in_strings()
         
         create_blocks_view("str")
         mix_blocks()
         mix_strings_in_blocks()
         create_strings_view()
+
 
 
 def hide_cells_in_game_field(difficulty_level):
@@ -229,6 +253,7 @@ def hide_cells_in_game_field(difficulty_level):
 
         result = {"in_string": in_string, "in_column": in_column, "in_square": in_square}
         return result
+
 
     if difficulty_level == "easy":
         max_hide_cells = 20
