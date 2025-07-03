@@ -3,7 +3,7 @@ from game_field import GameField
 
 
 def main():
-    gf = GameField()
+    gf = GameField(3)
     gf.print_game_field()
 
     gf.mix_game_field()

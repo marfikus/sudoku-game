@@ -162,6 +162,7 @@ class GameField:
 
 
     def hide_cells_in_game_field(self, difficulty_level):
+        # исправить для других размерностей!
         def count_zeros(field, string, column):
             in_string = 0
             in_column = 0
@@ -224,38 +225,21 @@ class GameField:
 
 
     def detect_square(self, string, column):
-        # исправить для других размерностей!
-        x1 = 0
-        y1 = 0
-        x2 = 0
-        y2 = 0
+        def detect_borders(value):
+            b1 = b2 = None
+            start = 0
+            end = self.dim - 1
+            for _ in range(self.dim):
+                if value >= start and value <= end:
+                    b1 = start
+                    b2 = end
+                    break
+                start += self.dim
+                end += self.dim
+            return (b1, b2)
 
-        string = int(string)
-        column = int(column)
-
-        if string <= 2:
-            y1 = 0
-            y2 = 2
-        
-        elif string > 2 and string <= 5:
-            y1 = 3
-            y2 = 5
-        
-        elif string > 5:
-            y1 = 6
-            y2 = 8
-
-        if column <= 2:
-            x1 = 0
-            x2 = 2
-
-        elif column > 2 and column <= 5:
-            x1 = 3
-            x2 = 5
-
-        elif column > 5:
-            x1 = 6
-            x2 = 8
+        y1, y2 = detect_borders(string)
+        x1, x2 = detect_borders(column)
 
         return (x1, y1, x2, y2)
 
