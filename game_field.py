@@ -12,6 +12,7 @@ class GameField:
 
         self.game_field = [[0 for _ in range(self.size)] for _ in range(self.size)]
         self.fill_game_field()
+        self.hided_cells = []
 
 
     def is_valid_dimension(self, dim):
@@ -161,8 +162,38 @@ class GameField:
         change_digits_in_strings(10)
 
 
-    def hide_cells_in_game_field(self, difficulty_level):
-        # исправить для других размерностей!
+    def hide_cells_in_game_field(self, hide_percent):
+        if len(self.hided_cells) > 0:
+            print("Already hided!")
+            return
+
+        if (hide_percent < 0) or (hide_percent > 100):
+            print("Invalid value of 'hide_percent'(0-100)!")
+            return
+
+        max_hided_cells = round(((self.size * self.size) / 100) * hide_percent)
+        self.hided_cells = []
+
+        while len(self.hided_cells) < max_hided_cells:
+            y = random.randint(0, self.size - 1)
+            x = random.randint(0, self.size - 1)
+
+            if self.game_field[y][x] == 0:
+                continue
+
+            self.hided_cells.append({
+                "coords": (y, x),
+                "source_value": self.game_field[y][x],
+                "current_value": 0
+            })
+            self.game_field[y][x] = 0
+
+        print(len(self.hided_cells), self.hided_cells)
+
+
+    # другой вариант, для более равномерного скрытия ячеек (экспериментальный)
+    # не переделан для других размерностей!
+    def hide_cells_in_game_field_2(self, difficulty_level):
         def count_zeros(field, string, column):
             in_string = 0
             in_column = 0

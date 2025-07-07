@@ -9,7 +9,7 @@ def main():
     gf.mix_game_field()
     gf.print_game_field()
 
-    gf.hide_cells_in_game_field("hard")
+    gf.hide_cells_in_game_field(25)
     gf.print_game_field()
 
     gf.solve_game_field()
