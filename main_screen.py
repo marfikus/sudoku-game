@@ -44,7 +44,9 @@ class MainScreen:
                 self.settings_screen.close()
 
         self.game_field = GameField(self.settings.game_field_dim)
-        self.game_field.print_game_field()
+        self.game_field.hide_cells(self.settings.hide_cells_percent)
+        # self.game_field.solve()
+        self.game_field.show()
 
         self.width = self.settings.cell_size * self.game_field.size
         self.height = self.settings.cell_size * self.game_field.size

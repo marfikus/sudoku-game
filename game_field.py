@@ -1,3 +1,4 @@
+
 import random, copy
 
 
@@ -11,7 +12,8 @@ class GameField:
             self.size = self.dim * self.dim
 
         self.game_field = [[0 for _ in range(self.size)] for _ in range(self.size)]
-        self.fill_game_field()
+        self.fill()
+        self.mix()
         self.hided_cells = []
 
 
@@ -27,15 +29,14 @@ class GameField:
             return False
 
 
-    # укоротить названия методов, убрать game field
-    def print_game_field(self):
+    def show(self):
         print("\n===========================\n")
         for i in self.game_field:
             print(i)
         print("\n===========================\n")
 
 
-    def fill_game_field(self):
+    def fill(self):
         def calc_value(value):
             if value > self.size:
                 return value - self.size
@@ -57,7 +58,7 @@ class GameField:
             block_start += 1
 
 
-    def mix_game_field(self):
+    def mix(self):
         def transpose(): # not used
             list_of_columns = []
             # по столбцам:
@@ -164,7 +165,7 @@ class GameField:
         change_digits_in_strings(10)
 
 
-    def hide_cells_in_game_field(self, hide_percent):
+    def hide_cells(self, hide_percent):
         if len(self.hided_cells) > 0:
             print("Already hided!")
             return
@@ -191,12 +192,12 @@ class GameField:
             })
             self.game_field[y][x] = 0
 
-        print(len(self.hided_cells), self.hided_cells)
+        # print(len(self.hided_cells), self.hided_cells)
 
 
     # другой вариант, для более равномерного скрытия ячеек (экспериментальный)
     # не переделан для других размерностей!
-    def hide_cells_in_game_field_2(self, difficulty_level):
+    def hide_cells_2(self, difficulty_level):
         def count_zeros(field, string, column):
             in_string = 0
             in_column = 0
@@ -278,7 +279,7 @@ class GameField:
         return (x1, y1, x2, y2)
 
 
-    def solve_game_field(self):
+    def solve(self):
         new_value = True # флаг защиты от зацикливания
         x = len(self.game_field[0])
         y = len(self.game_field)
