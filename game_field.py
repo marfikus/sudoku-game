@@ -15,6 +15,7 @@ class GameField:
         self.hided_cells = []
 
 
+    # перенести в settings screen, а здесь уже просто получать значение при создании
     def is_valid_dimension(self, dim):
         valid_dimensions = [2, 3, 4, 5]
 
@@ -26,6 +27,7 @@ class GameField:
             return False
 
 
+    # укоротить названия методов, убрать game field
     def print_game_field(self):
         print("\n===========================\n")
         for i in self.game_field:
