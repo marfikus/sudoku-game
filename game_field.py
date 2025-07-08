@@ -183,8 +183,9 @@ class GameField:
 
             self.hided_cells.append({
                 "coords": (y, x),
+                "screen_coords": None,
                 "source_value": self.game_field[y][x],
-                "current_value": 0
+                "input_value": None
             })
             self.game_field[y][x] = 0
 
