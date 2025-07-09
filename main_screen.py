@@ -1,5 +1,5 @@
 
-from tkinter import Tk, Canvas, Menu
+from tkinter import Tk, Canvas, Menu, CENTER
 import random
 
 from game_field import GameField
@@ -9,6 +9,7 @@ colors = {
     "red": ["#ff0000", "#900000"],
     "green": ["#00ff00", "#009000"],
     "blue": ["#0000ff", "#000090"],
+    "gray": ["#aaaaaa", "#dddddd"],
 }
 
 class MainScreen:
@@ -51,30 +52,34 @@ class MainScreen:
         self.width = self.settings.cell_size * self.game_field.size
         self.height = self.settings.cell_size * self.game_field.size
 
-        # self.matrix = [
-        #     [None for _ in range(self.settings.matrix_size)] for _ in range(self.settings.matrix_size)
-        # ]
-
         self.c = Canvas(self.root, width=self.width, height=self.height, bg="white")
         self.c.pack()
 
         x = 0
         y = 0
         for h in range(self.game_field.size):
-            for w in range(self.game_field.size):
-                color = random.choice(list(colors.keys()))
+            for w in range(self.game_field.size):                
+                color = colors["gray"][0]
+                cell_value = self.game_field.game_field[h][w]
+
+                if cell_value == 0:
+                    cell_value = ""
+                    color = colors["gray"][1]
+
                 rect = self.c.create_rectangle(x, y, 
                     x + self.settings.cell_size, 
                     y + self.settings.cell_size, 
-                    fill=colors[color][0]
+                    fill=color
                 )
-                block = {
-                    "rect": rect,
-                    "selected": False,
-                    "color": color,
-                    "matrix_coords": (h, w),
-                }
-                # self.matrix[h][w] = block
+
+                x_center = x + self.settings.cell_size / 2
+                y_center = y + self.settings.cell_size / 2
+                value = self.c.create_text(
+                    x_center, 
+                    y_center, 
+                    text=cell_value, 
+                    justify=CENTER
+                )
                 x += self.settings.cell_size
 
             x = 0
