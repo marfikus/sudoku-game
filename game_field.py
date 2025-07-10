@@ -11,10 +11,10 @@ class GameField:
             self.dim = dim
             self.size = self.dim * self.dim
 
-        self.game_field = [[0 for _ in range(self.size)] for _ in range(self.size)]
+        self.matrix = [[0 for _ in range(self.size)] for _ in range(self.size)]
         self.fill()
         self.mix()
-        self.hided_cells = []
+        self.hided_cells = {}
 
 
     # перенести в settings screen, а здесь уже просто получать значение при создании
@@ -31,7 +31,7 @@ class GameField:
 
     def show(self):
         print("\n===========================\n")
-        for i in self.game_field:
+        for i in self.matrix:
             print(i)
         print("\n===========================\n")
 
@@ -52,7 +52,7 @@ class GameField:
             for j in range(i, i + self.dim):
                 # по ячейкам:
                 for n in range(0, self.size):
-                    self.game_field[j][n] = calc_value(str_start + n)
+                    self.matrix[j][n] = calc_value(str_start + n)
 
                 str_start += self.dim
             block_start += 1
@@ -62,9 +62,9 @@ class GameField:
         def transpose(): # not used
             list_of_columns = []
             # по столбцам:
-            for j in range(len(self.game_field)):
+            for j in range(len(self.matrix)):
                 # берем j-тую ячейку каждой строки:
-                column = [self.game_field[i][j] for i in range(len(self.game_field))]
+                column = [self.matrix[i][j] for i in range(len(self.matrix))]
                 list_of_columns.append(column)
             
             return list_of_columns
@@ -72,10 +72,10 @@ class GameField:
 
         def mix_strings(): # not used
             mixed = []
-            variants = list(range(len(self.game_field)))
-            for i in range(len(self.game_field)):
+            variants = list(range(len(self.matrix)))
+            for i in range(len(self.matrix)):
                 n = random.choice(variants)
-                mixed.append(self.game_field[n])
+                mixed.append(self.matrix[n])
                 variants.remove(n)
 
             return mixed
@@ -88,61 +88,61 @@ class GameField:
             for n in range(0, self.size, self.dim):
                 for m in range(self.dim):
                     if mode == "str":
-                        block.append(self.game_field[m + n])
+                        block.append(self.matrix[m + n])
                     elif mode == "col":
-                        column = [self.game_field[i][m + n] for i in range(len(self.game_field))]
+                        column = [self.matrix[i][m + n] for i in range(len(self.matrix))]
                         block.append(column)
 
                 result.append(block)
                 block = []
 
-            self.game_field = result
+            self.matrix = result
             return True
 
 
         def mix_blocks():
-            count = len(self.game_field)
+            count = len(self.matrix)
             for i in range(count):
                 n = random.randint(0, count - 1)
-                block = self.game_field.pop(n)
+                block = self.matrix.pop(n)
                 n = random.randint(0, count - 1)
-                self.game_field.insert(n, block)
+                self.matrix.insert(n, block)
 
             return True
 
 
         def mix_strings_in_blocks():
-            count = len(self.game_field)
+            count = len(self.matrix)
             for i in range(count):
                 for j in range(count):
                     n = random.randint(0, count - 1)
-                    string = self.game_field[i].pop(n)
+                    string = self.matrix[i].pop(n)
                     n = random.randint(0, count - 1)
-                    self.game_field[i].insert(n, string)
+                    self.matrix[i].insert(n, string)
 
             return True
 
 
         def create_strings_view():
             result = []
-            count = len(self.game_field)
+            count = len(self.matrix)
 
             for i in range(count):
                 for j in range(count):
-                    result.append(self.game_field[i][j])
+                    result.append(self.matrix[i][j])
 
-            self.game_field = result
+            self.matrix = result
             return True
 
 
         def change_digits_in_strings(times=3):
             for _ in range(times):
-                digits = [i for i in range(1, len(self.game_field) + 1)]
+                digits = [i for i in range(1, len(self.matrix) + 1)]
                 a = random.choice(digits)
                 digits.remove(a)
                 b = random.choice(digits)
 
-                for string in self.game_field:
+                for string in self.matrix:
                     a_index = string.index(a)
                     b_index = string.index(b)
                     string[a_index] = b
@@ -175,22 +175,22 @@ class GameField:
             return
 
         max_hided_cells = round(((self.size * self.size) / 100) * hide_percent)
-        self.hided_cells = []
+        self.hided_cells = {}
 
         while len(self.hided_cells) < max_hided_cells:
             y = random.randint(0, self.size - 1)
             x = random.randint(0, self.size - 1)
 
-            if self.game_field[y][x] == 0:
+            if self.matrix[y][x] == 0:
                 continue
 
-            self.hided_cells.append({
-                "coords": (y, x),
-                "screen_coords": None,
-                "source_value": self.game_field[y][x],
-                "input_value": None
-            })
-            self.game_field[y][x] = 0
+            self.hided_cells[f"{y} {x}"] = {
+                "source_value": self.matrix[y][x],
+                "input_value": None,
+                "screen_block": None,
+            }
+
+            self.matrix[y][x] = 0
 
         # print(len(self.hided_cells), self.hided_cells)
 
@@ -231,31 +231,31 @@ class GameField:
         # будет заполнять по новой, пока не наберёт нужное число:
         while count_hide_cells != max_hide_cells:
 
-            game_field_test = copy.deepcopy(self.game_field)
+            matrix_test = copy.deepcopy(self.matrix)
             count_hide_cells = 0
             new_zero = True # флаг защиты от зацикливания
 
             while count_hide_cells < max_hide_cells and new_zero:
                 new_zero = False
-                i = random.randint(0, len(game_field_test[0]) - 1)
-                j = random.randint(0, len(game_field_test) - 1)
+                i = random.randint(0, len(matrix_test[0]) - 1)
+                j = random.randint(0, len(matrix_test) - 1)
 
-                if game_field_test[i][j] == 0:
+                if matrix_test[i][j] == 0:
                     new_zero = True
                     continue
 
-                zeros = count_zeros(game_field_test, i, j)
+                zeros = count_zeros(matrix_test, i, j)
                 if zeros["in_string"] < 5 and zeros["in_column"] < 5 and zeros["in_square"] < 5:
-                    game_field_test[i][j] = 0
+                    matrix_test[i][j] = 0
                     count_hide_cells += 1
                     new_zero = True
 
                 # а тут всё просто, без условий)
-                # game_field_test[i][j] = 0
+                # matrix_test[i][j] = 0
                 # count_hide_cells += 1
                 # new_zero = True
 
-        self.game_field = game_field_test
+        self.matrix = matrix_test
         print("count_hide_cells:", count_hide_cells)
 
 
@@ -281,8 +281,8 @@ class GameField:
 
     def solve(self):
         new_value = True # флаг защиты от зацикливания
-        x = len(self.game_field[0])
-        y = len(self.game_field)
+        x = len(self.matrix[0])
+        y = len(self.matrix)
         count_new_value = 0
 
         while new_value:
@@ -291,7 +291,7 @@ class GameField:
                 for j in range(y):
                     variants = list(self.create_unique_set(i, j))
                     if len(variants) == 1:
-                        self.game_field[i][j] = variants[0]
+                        self.matrix[i][j] = variants[0]
                         new_value = True
                         count_new_value += 1
 
@@ -304,7 +304,7 @@ class GameField:
 
 
     def create_unique_set(self, string, column):
-        if self.game_field[string][column] != 0:
+        if self.matrix[string][column] != 0:
             return set()
 
         all_numbers = set(range(1, 10))
@@ -317,17 +317,17 @@ class GameField:
         y2 = our_square[3] + 1
 
         for i in range(self.size):
-            x = self.game_field[string][i]
+            x = self.matrix[string][i]
             if x != 0:
                 exist_numbers.add(x)
 
-            y = self.game_field[i][column]
+            y = self.matrix[i][column]
             if y != 0:
                 exist_numbers.add(y)
 
         for i in range(y1, y2):
             for j in range(x1, x2):
-                n = self.game_field[i][j]
+                n = self.matrix[i][j]
                 if n != 0:
                     exist_numbers.add(n)
 

@@ -59,31 +59,40 @@ class MainScreen:
         y = 0
         for h in range(self.game_field.size):
             for w in range(self.game_field.size):                
-                color = colors["gray"][0]
-                cell_value = self.game_field.game_field[h][w]
+                cell_color = colors["gray"][0]
+                matrix_value = self.game_field.matrix[h][w]
+                screen_value = matrix_value
 
-                if cell_value == 0:
-                    cell_value = ""
-                    color = colors["gray"][1]
+                if matrix_value == 0:
+                    screen_value = ""
+                    cell_color = colors["gray"][1]
 
                 rect = self.c.create_rectangle(x, y, 
                     x + self.settings.cell_size, 
                     y + self.settings.cell_size, 
-                    fill=color
+                    fill=cell_color
                 )
 
                 x_center = x + self.settings.cell_size / 2
                 y_center = y + self.settings.cell_size / 2
-                value = self.c.create_text(
+                text = self.c.create_text(
                     x_center, 
                     y_center, 
-                    text=cell_value, 
+                    text=screen_value, 
                     justify=CENTER
                 )
+
+                if matrix_value == 0:
+                    block = {"rect": rect, "text": text}
+                    # print(self.game_field.hided_cells[f"{h} {w}"])
+                    self.game_field.hided_cells[f"{h} {w}"]["screen_block"] = block
+
                 x += self.settings.cell_size
 
             x = 0
             y += self.settings.cell_size
+
+        # print(len(self.game_field.hided_cells), self.game_field.hided_cells)
 
         self.c.bind("<Button-1>", self.click_cell)
 
