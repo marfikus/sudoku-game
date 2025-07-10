@@ -185,6 +185,7 @@ class GameField:
                 continue
 
             self.hided_cells[f"{y} {x}"] = {
+                "matrix_coords": (y, x),
                 "source_value": self.matrix[y][x],
                 "input_value": None,
                 "screen_block": None,

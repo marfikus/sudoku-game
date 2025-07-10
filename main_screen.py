@@ -84,15 +84,12 @@ class MainScreen:
 
                 if matrix_value == 0:
                     block = {"rect": rect, "text": text}
-                    # print(self.game_field.hided_cells[f"{h} {w}"])
                     self.game_field.hided_cells[f"{h} {w}"]["screen_block"] = block
 
                 x += self.settings.cell_size
 
             x = 0
             y += self.settings.cell_size
-
-        # print(len(self.game_field.hided_cells), self.game_field.hided_cells)
 
         self.c.bind("<Button-1>", self.click_cell)
 
@@ -105,5 +102,10 @@ class MainScreen:
 
 
     def click_cell(self, event):
-        pass
+        for cell in self.game_field.hided_cells:
+            rect = self.game_field.hided_cells[cell]["screen_block"]["rect"]
+            coords = self.c.coords(rect)
+            if (coords[0] <= event.x <= coords[2]) and (coords[1] <= event.y <= coords[3]):
+                print(self.game_field.hided_cells[cell])
+                break
 
