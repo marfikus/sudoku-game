@@ -16,6 +16,7 @@ class MainScreen:
     def __init__(self, settings):
         self.settings = settings
         self.settings_screen = None
+        self.input_screen = None
 
         self.root = Tk()
         self.root.title("Sudoku game")
@@ -41,8 +42,12 @@ class MainScreen:
         if self.game_is_active:
             self.c.destroy()
             self.game_is_active = False
+
             if self.settings_screen.settings_screen_is_active:
                 self.settings_screen.close()
+                
+            if self.input_screen.screen_is_active:
+                self.input_screen.close()
 
         self.game_field = GameField(self.settings.game_field_dim)
         self.game_field.hide_cells(self.settings.hide_cells_percent)
@@ -107,5 +112,8 @@ class MainScreen:
             coords = self.c.coords(rect)
             if (coords[0] <= event.x <= coords[2]) and (coords[1] <= event.y <= coords[3]):
                 print(self.game_field.hided_cells[cell])
+
+                self.input_screen.show(self.game_field.hided_cells[cell]["input_value"])
+
                 break
 
