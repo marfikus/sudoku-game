@@ -9,7 +9,7 @@ def main():
     settings = Settings()
     main_screen = MainScreen(settings)
     settings_screen = SettingsScreen(settings, main_screen)
-    input_screen = InputScreen(main_screen)
+    input_screen = InputScreen(settings, main_screen)
     main_screen.start_game()
 
 
