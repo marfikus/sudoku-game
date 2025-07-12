@@ -109,7 +109,10 @@ class MainScreen:
             if (coords[0] <= event.x <= coords[2]) and (coords[1] <= event.y <= coords[3]):
                 print(self.game_field.hided_cells[cell])
 
-                self.input_screen.show(self.game_field.hided_cells[cell]["input_value"])
+                self.input_screen.show(
+                    self.game_field.hided_cells[cell]["input_value"],
+                    self.settings.game_field_dim
+                )
 
                 break
 
