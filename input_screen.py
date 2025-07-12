@@ -1,5 +1,5 @@
 
-from tkinter import Toplevel, Frame, Button, LEFT
+import tkinter as tk
 
 
 class InputScreen:
@@ -15,7 +15,7 @@ class InputScreen:
         if self.screen_is_active:
             return
 
-        self.screen = Toplevel()
+        self.screen = tk.Toplevel()
         self.screen.overrideredirect(True)
         # self.screen.title("Select action")
         # self.screen.resizable(False, False)
@@ -41,28 +41,28 @@ class InputScreen:
 
         digit = 1
         for y in range(game_field_dim):
-            f_row = Frame(self.screen)
+            f_row = tk.Frame(self.screen)
             for x in range(game_field_dim):
-                Button(
+                tk.Button(
                     f_row, 
                     text=digit, 
                     width=2, 
                     command=lambda digit=digit: self.click_digit(digit)
-                ).pack(side=LEFT)
+                ).pack(side=tk.LEFT)
                 digit += 1
             f_row.pack()
 
-        f_row = Frame(self.screen)
-        Button(
+        f_row = tk.Frame(self.screen)
+        tk.Button(
             f_row, 
             text="Clear",
             command=self.click_clear
-        ).pack(side=LEFT)
-        Button(
+        ).pack(side=tk.LEFT)
+        tk.Button(
             f_row, 
             text="Cancel",
             command=self.click_cancel
-        ).pack(side=LEFT)
+        ).pack(side=tk.LEFT)
         f_row.pack()
 
 

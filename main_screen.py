@@ -1,5 +1,5 @@
 
-from tkinter import Tk, Canvas, Menu, CENTER
+import tkinter as tk
 import random
 
 from game_field import GameField
@@ -18,11 +18,11 @@ class MainScreen:
         self.settings_screen = None
         self.input_screen = None
 
-        self.root = Tk()
+        self.root = tk.Tk()
         self.root.title("Sudoku game")
         self.root.resizable(False, False)
 
-        self.mainmenu = Menu(self.root)
+        self.mainmenu = tk.Menu(self.root)
         self.root.config(menu=self.mainmenu)
         self.mainmenu.add_command(label="New game", command=self.start_game)
         self.mainmenu.add_command(label="Settings", command=self.show_settings)
@@ -53,7 +53,7 @@ class MainScreen:
         self.width = self.settings.cell_size * self.game_field.size
         self.height = self.settings.cell_size * self.game_field.size
 
-        self.c = Canvas(self.root, width=self.width, height=self.height, bg="white")
+        self.c = tk.Canvas(self.root, width=self.width, height=self.height, bg="white")
         self.c.pack()
 
         x = 0
@@ -80,7 +80,7 @@ class MainScreen:
                     x_center, 
                     y_center, 
                     text=screen_value, 
-                    justify=CENTER
+                    justify=tk.CENTER
                 )
 
                 if matrix_value == 0:

@@ -1,5 +1,5 @@
 
-from tkinter import BooleanVar, Toplevel, Checkbutton
+import tkinter as tk
 
 
 class SettingsScreen:
@@ -15,7 +15,7 @@ class SettingsScreen:
         if self.screen_is_active:
             return
 
-        self.screen = Toplevel()
+        self.screen = tk.Toplevel()
         x = self.main_screen.root.winfo_x()
         y = self.main_screen.root.winfo_y()
         self.screen.geometry(f"+{x}+{y}")
