@@ -5,13 +5,6 @@ import random
 from game_field import GameField
 
 
-colors = {
-    "red": ["#ff0000", "#900000"],
-    "green": ["#00ff00", "#009000"],
-    "blue": ["#0000ff", "#000090"],
-    "gray": ["#aaaaaa", "#dddddd"],
-}
-
 class MainScreen:
     def __init__(self, settings):
         self.settings = settings
@@ -60,13 +53,13 @@ class MainScreen:
         y = 0
         for h in range(self.game_field.size):
             for w in range(self.game_field.size):                
-                cell_color = colors["gray"][0]
+                cell_color = self.settings.colors["cell_bg"]["default"]
                 matrix_value = self.game_field.matrix[h][w]
                 screen_value = matrix_value
 
                 if matrix_value == 0:
                     screen_value = ""
-                    cell_color = colors["gray"][1]
+                    cell_color = self.settings.colors["cell_bg"]["hided"]
 
                 rect = self.c.create_rectangle(x, y, 
                     x + self.settings.cell_size, 
