@@ -25,6 +25,7 @@ class MainScreen:
         self.game_field = None
         self.c = None
         self.game_is_active = False
+        self.selected_cell = None
 
 
     def start_game(self):
@@ -101,10 +102,29 @@ class MainScreen:
             coords = self.c.coords(rect)
             if (coords[0] <= event.x <= coords[2]) and (coords[1] <= event.y <= coords[3]):
                 # print(self.game_field.hided_cells[cell])
+                self.selected_cell = cell
                 self.c.itemconfig(rect, fill=self.settings.colors["cell_bg"]["selected"])
                 self.input_screen.show(
                     self.game_field.hided_cells[cell]["input_value"]
                 )
-
                 break
+
+
+    def change_cell_value(self, digit):
+        rect = self.game_field.hided_cells[self.selected_cell]["screen_block"]["rect"]
+        self.c.itemconfig(rect, fill=self.settings.colors["cell_bg"]["hided"])
+
+        if digit is not None:
+            text = self.game_field.hided_cells[self.selected_cell]["screen_block"]["text"]
+            
+            if digit == 0: # click Clear
+                self.c.itemconfig(text, text="")
+            else: # click digit
+                self.c.itemconfig(text, text=digit)
+
+            self.game_field.hided_cells[self.selected_cell]["input_value"] = digit
+            y, x = self.game_field.hided_cells[self.selected_cell]["matrix_coords"]
+            self.game_field.matrix[y][x] = digit
+
+        # check game field
 

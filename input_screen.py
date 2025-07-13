@@ -72,17 +72,17 @@ class InputScreen:
 
 
     def click_digit(self, digit):
-        print(digit)
+        self.main_screen.change_cell_value(digit)
         self.close()
 
 
     def click_clear(self):
-        print("clear")
+        self.main_screen.change_cell_value(0)
         self.close()
 
 
     def click_cancel(self):
-        print("cancel")
+        self.main_screen.change_cell_value(None)
         self.close()
 
 
