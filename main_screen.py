@@ -42,7 +42,7 @@ class MainScreen:
         self.game_field = GameField(self.settings.game_field_dim)
         self.game_field.hide_cells(self.settings.hide_cells_percent)
         # self.game_field.solve()
-        self.game_field.show()
+        # self.game_field.show()
 
         self.width = self.settings.cell_size * self.game_field.size
         self.height = self.settings.cell_size * self.game_field.size
@@ -116,7 +116,7 @@ class MainScreen:
 
         if digit is not None:
             text = self.game_field.hided_cells[self.selected_cell]["screen_block"]["text"]
-            
+
             if digit == 0: # click Clear
                 self.c.itemconfig(text, text="")
             else: # click digit
@@ -126,5 +126,6 @@ class MainScreen:
             y, x = self.game_field.hided_cells[self.selected_cell]["matrix_coords"]
             self.game_field.matrix[y][x] = digit
 
-        # check game field
+        if self.game_field.is_solved():
+            print("Game solved!")
 

@@ -337,3 +337,10 @@ class GameField:
         # return all_numbers, exist_numbers, unique_set
         return unique_set
 
+
+    def is_solved(self):
+        for cell in self.hided_cells:
+            if self.hided_cells[cell]["input_value"] != self.hided_cells[cell]["source_value"]:
+                return False
+        return True
+
