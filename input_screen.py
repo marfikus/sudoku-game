@@ -11,7 +11,7 @@ class InputScreen:
         self.main_screen.input_screen = self
 
 
-    def show(self, cell_value, game_field_dim):
+    def show(self, cell_value):
         if self.screen_is_active:
             return
 
@@ -31,6 +31,7 @@ class InputScreen:
         # сделал так, поскольку размеры текущего окна ещё не определены
         # (а если позже это делать, то будет заметно мелькание окна при изменении позиции)
         # поэтому просто рассчитываю предполагаемые размеры окна и использую их
+        game_field_dim = self.settings.game_field_dim
         future_screen_w = game_field_dim * self.settings.button_width
         future_screen_h = (game_field_dim + 1) * self.settings.button_height
         x = root_center_x - (future_screen_w // 2)
@@ -43,11 +44,15 @@ class InputScreen:
         for y in range(game_field_dim):
             f_row = tk.Frame(self.screen)
             for x in range(game_field_dim):
+                bg = None
+                if cell_value == digit:
+                    bg = self.settings.colors["cell_bg"]["selected"]
                 tk.Button(
                     f_row, 
                     text=digit, 
                     width=2, 
-                    command=lambda digit=digit: self.click_digit(digit)
+                    command=lambda digit=digit: self.click_digit(digit),
+                    bg=bg
                 ).pack(side=tk.LEFT)
                 digit += 1
             f_row.pack()
@@ -68,14 +73,17 @@ class InputScreen:
 
     def click_digit(self, digit):
         print(digit)
+        self.close()
 
 
     def click_clear(self):
         print("clear")
+        self.close()
 
 
     def click_cancel(self):
         print("cancel")
+        self.close()
 
 
     def close(self):

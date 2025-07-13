@@ -100,11 +100,10 @@ class MainScreen:
             rect = self.game_field.hided_cells[cell]["screen_block"]["rect"]
             coords = self.c.coords(rect)
             if (coords[0] <= event.x <= coords[2]) and (coords[1] <= event.y <= coords[3]):
-                print(self.game_field.hided_cells[cell])
-
+                # print(self.game_field.hided_cells[cell])
+                self.c.itemconfig(rect, fill=self.settings.colors["cell_bg"]["selected"])
                 self.input_screen.show(
-                    self.game_field.hided_cells[cell]["input_value"],
-                    self.settings.game_field_dim
+                    self.game_field.hided_cells[cell]["input_value"]
                 )
 
                 break

@@ -7,9 +7,9 @@ class Settings:
 
         self.colors = {
             "cell_bg": {
-                "default": "#aaaaaa", 
-                "hided": "#cccccc", 
-                "selected": "#eeeeee"
+                "default": "#cccccc", 
+                "hided": "#aaaaaa", 
+                "selected": "#777777"
             },
         }
 
