@@ -44,14 +44,21 @@ class MainScreen:
         # self.game_field.solve()
         # self.game_field.show()
 
-        self.width = self.settings.cell_size * self.game_field.size
-        self.height = self.settings.cell_size * self.game_field.size
+        gates = (self.settings.game_field_dim - 1) * self.settings.square_gate
+        self.width = (self.settings.cell_size * self.game_field.size) + gates + 1
+        # self.height = (self.settings.cell_size * self.game_field.size) + gates + 1
+        self.height = self.width
 
-        self.c = tk.Canvas(self.root, width=self.width, height=self.height, bg="white")
+        self.c = tk.Canvas(
+            self.root, 
+            width=self.width, 
+            height=self.height, 
+            bg=self.settings.colors["canvas_bg"]
+        )
         self.c.pack()
 
-        x = 0
-        y = 0
+        x = 1
+        y = 1
         for h in range(self.game_field.size):
             for w in range(self.game_field.size):                
                 cell_color = self.settings.colors["cell_bg"]["default"]
@@ -83,8 +90,14 @@ class MainScreen:
 
                 x += self.settings.cell_size
 
-            x = 0
+                if (w + 1) % self.settings.game_field_dim == 0:
+                    x += self.settings.square_gate
+
+            x = 1
             y += self.settings.cell_size
+
+            if (h + 1) % self.settings.game_field_dim == 0:
+                y += self.settings.square_gate
 
         self.c.bind("<Button-1>", self.click_cell)
 
