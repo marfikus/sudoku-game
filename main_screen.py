@@ -44,9 +44,10 @@ class MainScreen:
         # self.game_field.solve()
         # self.game_field.show()
 
-        gates = (self.settings.game_field_dim - 1) * self.settings.square_gate
-        self.width = (self.settings.cell_size * self.game_field.size) + gates + 1
-        # self.height = (self.settings.cell_size * self.game_field.size) + gates + 1
+        # gaps - суммарное расстояние между квадратами NxN + 1px в начале
+        gaps = self.settings.square_gap * (self.settings.game_field_dim - 1) + 1
+        self.width = (self.settings.cell_size * self.game_field.size) + gaps
+        # self.height = (self.settings.cell_size * self.game_field.size) + gaps
         self.height = self.width
 
         self.c = tk.Canvas(
@@ -91,13 +92,13 @@ class MainScreen:
                 x += self.settings.cell_size
 
                 if (w + 1) % self.settings.game_field_dim == 0:
-                    x += self.settings.square_gate
+                    x += self.settings.square_gap
 
             x = 1
             y += self.settings.cell_size
 
             if (h + 1) % self.settings.game_field_dim == 0:
-                y += self.settings.square_gate
+                y += self.settings.square_gap
 
         self.c.bind("<Button-1>", self.click_cell)
 
